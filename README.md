@@ -18,3 +18,9 @@ ai-spike
    * ollama stop qwen2.5-coder:7b-instruct
 7. 安装Web & Desktop UI
    * [Chatbox](https://github.com/Bin-Huang/Chatbox)
+
+## 微调
+
+Qwen2.5-Coder微调
+
+[LLaMA-Factory](https://qwen.readthedocs.io/en/latest/training/SFT/llama_factory.html)
