@@ -1,24 +1,29 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
+from matplotlib import pyplot as plt
 
 class BostonHouse:
     def main(self):
-        data = pd.read_csv("USA_Housing.csv")
-        real_prices = np.array(data.loc[:, "Price"]).reshape(-1, 1)
-        multiple_factors = data.drop(["Price", "Address"], axis=1)
+        data = pd.read_csv("usa_housing_price.csv")
 
+        inputs = data.drop(['Price'], axis=1)
+        outputs = np.array(data.loc[:, 'Price']).reshape(-1, 1)
         linear_regression = LinearRegression()
-        linear_regression.fit(multiple_factors, real_prices)
+        linear_regression.fit(inputs, outputs)
 
-        new_house = np.array([79545.45857, 5.682861322, 7.009188143, 6, 23086.8005]).reshape(1, -1)
+        predict_outputs = linear_regression.predict(inputs)
+        score = r2_score(outputs, predict_outputs)
+        print(score)
+
+        new_house = np.array([66000,3,6,20000,150]).reshape(1, -1)
         new_house_predict = linear_regression.predict(new_house)
         print("house price: ", new_house_predict)
 
-        predict_prices = linear_regression.predict(multiple_factors)
-        score = r2_score(real_prices, predict_prices)
-        print(score)
+        plt.figure()
+        plt.scatter(outputs, predict_outputs)
+        plt.show()
 
 if __name__ == '__main__':
     BostonHouse().main()
