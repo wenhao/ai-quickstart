@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import matplotlib as mlp
 from scipy.stats import norm
 import numpy as np
+from sklearn.covariance import EllipticEnvelope
 
 data = pd.read_csv('anomaly_data.csv')
 
@@ -52,4 +53,32 @@ plt.title('x1 正态分布', font2)
 plt.subplot(122)
 plt.plot(x2_range, x2_normal)
 plt.title('x2 正态分布', font2)
+plt.show()
+
+ad_model = EllipticEnvelope()
+ad_model.fit(data)
+y_predict = ad_model.predict(data)
+print(pd.value_counts(y_predict))
+
+figure4 = plt.figure(figsize=(20, 10))
+original_data = plt.scatter(data.loc[:, 'x1'], data.loc[:, 'x2'], marker='x')
+anomaly_data = plt.scatter(data.loc[:, 'x1'][y_predict == -1], data.loc[:, 'x2'][y_predict == -1], marker='o',
+                      facecolor='none', edgecolor='red', s=150)
+plt.title('anomaly data')
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.legend((original_data, anomaly_data), ('original data', 'anomaly data'))
+plt.show()
+
+ad_model = EllipticEnvelope(contamination=0.02)
+ad_model.fit(data)
+y_predict = ad_model.predict(data)
+figure5 = plt.figure(figsize=(20, 10))
+original_data = plt.scatter(data.loc[:, 'x1'], data.loc[:, 'x2'], marker='x')
+anomaly_data = plt.scatter(data.loc[:, 'x1'][y_predict == -1], data.loc[:, 'x2'][y_predict == -1], marker='o',
+                      facecolor='none', edgecolor='red', s=150)
+plt.title('anomaly data')
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.legend((original_data, anomaly_data), ('original data', 'anomaly data'))
 plt.show()
