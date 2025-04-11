@@ -1,0 +1,3 @@
+DashScopeModel:
+  model: "qwen-plus"
+  api_key: "your_dashscope_api_key"
